@@ -1,5 +1,6 @@
 import './button.css';
 import './button.scss';
+import './secondStyles.css';
 
 const button = () => {
   let i = 0;

@@ -1,11 +1,19 @@
-const path = require('path')
+const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: 'dist/'
+    filename: '[name].[contenthash].bundle.js',
+    publicPath: ''
+  },
+  optimization: {
+    minimizer: [new OptimizeCssAssetsPlugin()]
   },
   module: {
     rules: [
@@ -14,15 +22,17 @@ module.exports = {
         loader: 'file-loader',
         options: {
           outputPath: 'public',
+          name: '[name].[ext]',
         }
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
       {
         test: /\.m?js$/,
@@ -35,5 +45,13 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new TerserPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].bundle.css'
+    }),
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin()
+  ]
 }
