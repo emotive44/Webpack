@@ -15,6 +15,7 @@ module.exports = {
   optimization: {
     minimizer: [new OptimizeCssAssetsPlugin()]
   },
+  mode: 'production',
   module: {
     rules: [
       {
