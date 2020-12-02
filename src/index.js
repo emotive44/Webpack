@@ -1,3 +1,5 @@
-import hello from './helloWorld';
+import button from './components/button/button';
+import importImg from './importImg';
 
-hello();
+importImg();
+button();
